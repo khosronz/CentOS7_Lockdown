@@ -1,4 +1,21 @@
 #!/bin/bash
+
+### Change OS Header Name
+
+sudo sed -i 's/CentOS Linux release 7.9.2009 (Core)/Tahlilyar release 2021 (Core)/g' /etc/centos-release
+sudo sed -i 's/CentOS Linux/Tahlilyar/g' /etc/os-release
+sudo sed -i 's/VERSION="7 (Core)"/VERSION="2021 (Core)"/g' /etc/os-release
+sudo sed -i 's/ID="centos"/ID="tahlilyar"/g' /etc/os-release
+sudo sed -i 's/ID_LIKE="rhel fedora"/ID_LIKE="tahlilyar"/g' /etc/os-release
+sudo sed -i 's/VERSION_ID="7"/VERSION_ID="2021"/g' /etc/os-release
+sudo sed -i 's/PRETTY_NAME="CentOS Linux 7 (Core)"/PRETTY_NAME="Tahlilyar 2021 (Core)"/g' /etc/os-release
+sudo sed -i 's/centos:centos:7/tahlilyar:tahlilyar:2021/g' /etc/os-release
+sudo sed -i 's/centos.org/tahlilyar.com/g' /etc/os-release
+sudo sed -i 's/CENTOS_MANTISBT_PROJECT="CentOS-7"/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/g' /etc/os-release
+sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSION="2021"/g' /etc/os-release
+sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
+sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
+
 ### Hardening Script for CentOS7 Servers.
 AUDITDIR="/tmp/$(hostname -s)_audit"
 TIME="$(date +%F_%T)"
@@ -18,6 +35,7 @@ install dccp /bin/true
 install sctp /bin/true
 install rds /bin/true
 install tipc /bin/true
+install usb-storage /bin/true
 EOF
 
 echo "Removing GCC compiler..."
