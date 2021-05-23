@@ -32,7 +32,7 @@ logvol /var/log/audit --vgname vg_root --name audit --size=1024
 # CIS 1.1.13-1.1.14
 logvol /home --vgname vg_root --name home --size=1024 --grow --fsoptions="nodev"
 
-rootpw yourpasswordhere
+rootpw qazwsx
 
 cdrom
 
