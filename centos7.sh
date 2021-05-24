@@ -16,11 +16,62 @@ sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSI
 sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
 sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
 
+# Ensure /tmp is configured - enabled
+
 ### Hardening Script for CentOS7 Servers.
 AUDITDIR="/tmp/$(hostname -s)_audit"
 TIME="$(date +%F_%T)"
 
 mkdir -p $AUDITDIR
+# Ensure mounting of cramfs filesystems is disabled - modprobe
+# Ensure mounting of squashfs filesystems is disabled - modprobe
+# Ensure mounting of udf filesystems is disabled - modprobe
+# Disable USB Storage - modprobe
+
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep cramfs 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep freevxfs 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep jffs2 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep hfs 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep hfsplus 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep squahfs 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep udf 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep dccp 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep sctp 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep rds 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep tipc 
+ls -l /lib/modules/$(uname -r)/kernel/fs | grep usb-storage 
+
+
+
+rmmod  cramfs 
+rmmod  freevxfs 
+rmmod  jffs2 
+rmmod  hfs 
+rmmod  hfsplus 
+rmmod  squahfs 
+rmmod  udf 
+rmmod  dccp 
+rmmod  sctp 
+rmmod  rds 
+rmmod  tipc 
+rmmod  usb-storage 
+
+## Run
+
+modprobe -v -r  cramfs 
+modprobe -v -r  freevxfs 
+modprobe -v -r  jffs2 
+modprobe -v -r  hfs 
+modprobe -v -r  hfsplus 
+modprobe -v -r  squahfs 
+modprobe -v -r  udf 
+modprobe -v -r  dccp 
+modprobe -v -r  sctp 
+modprobe -v -r  rds 
+modprobe -v -r  tipc 
+modprobe -v -r  usb-storage 
+
+
 
 echo "Disabling Legacy Filesystems"
 cat > /etc/modprobe.d/CIS.conf << "EOF"
@@ -37,6 +88,154 @@ install rds /bin/true
 install tipc /bin/true
 install usb-storage /bin/true
 EOF
+
+
+/usr/sbin/modprobe -n -v cramfs  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v freevxfs  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v jffs2  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v hfs  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v hfsplus  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v squahfs  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v udf  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v dccp  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v sctp  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v rds  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v tipc  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+/usr/sbin/modprobe -n -v usb-storage  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
+
+
+# Ensure /tmp is configured - enabled
+# Ensure /tmp is configured - mount
+# Ensure /dev/shm is configured - /etc/fstab
+# Ensure noexec option set on /dev/shm partition
+echo " ..."
+cat >> /etc/fstab << "EOF"
+/tmp /var/tmp none rw,noexec,nosuid,nodev,bind,size=2G 0 0
+tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
+EOF
+
+
+mount -a
+df -h
+
+# Ensure /tmp is configured - enabled
+# Ensure /tmp is configured - mount
+# Ensure /dev/shm is configured - /etc/fstab
+# Ensure noexec option set on /dev/shm partition
+echo "tmp,shm  ==> enabled, mount, configured, ..."
+
+
+# Ensure sudo commands use pty
+# Ensure sudo log file exists
+
+cat > /etc/sudoers.d/black.conf << "EOF"
+Defaults use_pty
+Defaults logfile='/var/log/sudo.log'
+EOF
+
+# Ensure AIDE is installed
+echo "Install AIDE ..."
+
+sudo yum install aide
+sudo aide --init
+mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+crontab -u root -e
+0 5 * * * /usr/sbin/aide --check
+
+
+cat > /etc/systemd/system/aidecheck.service << "EOF"
+[Unit] Description=Aide Check
+
+[Service] Type=simple ExecStart=/usr/sbin/aide --check
+
+[Install] WantedBy=multi-user.target
+EOF
+cat > /etc/systemd/system/aidecheck.timer << "EOF"
+[Unit] Description=Aide check every day at 5AM
+
+[Timer] OnCalendar=*-*-* 05:00:00 Unit=aidecheck.service
+
+[Install] WantedBy=multi-user.target
+EOF
+
+
+chown root:root /etc/systemd/system/aidecheck.* # chmod 0644 /etc/systemd/system/aidecheck.*
+systemctl daemon-reload
+systemctl enable aidecheck.service # systemctl --now enable aidecheck.timer
+
+## 
+
+# Ensure separate partition exists for /usr => 2 GB
+# Ensure separate partition exists for /tmp => 2 GB
+# Ensure separate partition exists for /var => 5 GB
+# Ensure separate partition exists for /var/tmp => 1G
+# Ensure separate partition exists for /var/log => 1G
+# Ensure separate partition exists for /var/log/audit => 1G
+# Ensure separate partition exists for /home => 3 GB
+
+sudo yum install lvm
+
+sudo fdisk /dev/sdb
+    m
+    o
+    n
+    p    
+
+    t
+    8e
+    w
+
+sudo pvcreate /dev/sdb1
+sudo vgcreate share /dev/sdb1
+
+sudo lvcreate --size 5G --name tahlilyar_var share
+sudo lvcreate --size 1G --name tahlilyar_tmp share
+sudo lvcreate --size 1G --name tahlilyar_log share
+sudo lvcreate --size 1G --name tahlilyar_log_audit share
+sudo lvcreate --size 3G --name tahlilyar_home share
+
+
+sudo mkfs.ext4 /dev/share/tahlilyar_var
+sudo mkfs.ext4 /dev/share/tahlilyar_tmp
+sudo mkfs.ext4 /dev/share/tahlilyar_log
+sudo mkfs.ext4 /dev/share/tahlilyar_log_audit
+sudo mkfs.ext4 /dev/share/tahlilyar_home
+
+mkdir -p /opt/tahlilyar_var
+mkdir -p /opt/tahlilyar_tmp
+mkdir -p /opt/tahlilyar_home
+
+
+cp -r /tmp/* /opt/tahlilyar_tmp
+cp -r /tmp/.* /opt/tahlilyar_tmp
+cp -r /var/* /opt/tahlilyar_var
+cp -r /var/.* /opt/tahlilyar_var
+cp -r /home/* /opt/tahlilyar_home
+cp -r /home/.* /opt/tahlilyar_home
+
+mount /dev/share/tahlilyar_tmp /tmp
+mount /dev/share/tahlilyar_log_audit /var/log/audit
+mount /dev/share/tahlilyar_log /var/log
+mount /dev/share/tahlilyar_var /var
+mount /dev/share/tahlilyar_home /home
+
+cp -r /opt/tahlilyar_tmp/* /tmp/*
+cp -r /opt/tahlilyar_var/* /var/*
+cp -r /opt/tahlilyar_home/* /home/*
+
+cat >> /etc/fstab << "EOF"
+/tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
+tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
+/dev/share/tahlilyar_tmp /tmp none rw,noexec,nosuid,nodev,bind 0 0
+/dev/share/tahlilyar_log_audit /var/log/audit none rw,noexec,nosuid,nodev,bind 0 0
+/dev/share/tahlilyar_log /var/log none rw,noexec,nosuid,nodev,bind 0 0
+/dev/share/tahlilyar_var /var none rw,noexec,nosuid,nodev,bind 0 0
+/dev/share/tahlilyar_home /home none rw,noexec,nosuid,nodev,bind 0 0
+
+EOF
+
+## 
 
 echo "Removing GCC compiler..."
 yum -y remove gcc*
@@ -252,6 +451,7 @@ chown root:root /etc/shadow
 chown root:root /etc/gshadow
 chown root:root /etc/group
 
+# Ensure sticky bit is set on all world-writable directories
 echo "Setting Sticky Bit on All World-Writable Directories..."
 df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null | xargs chmod a+t >> $AUDITDIR/sticky_on_world_$TIME.log
 
