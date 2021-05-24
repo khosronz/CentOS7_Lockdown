@@ -206,6 +206,8 @@ mkdir -p /opt/tahlilyar_var
 mkdir -p /opt/tahlilyar_tmp
 mkdir -p /opt/tahlilyar_home
 
+mkdir /var/log/audit
+mkdir /var/log
 
 cp -r /tmp/* /opt/tahlilyar_tmp
 cp -r /tmp/.* /opt/tahlilyar_tmp
@@ -220,9 +222,9 @@ mount /dev/share/tahlilyar_log /var/log
 mount /dev/share/tahlilyar_var /var
 mount /dev/share/tahlilyar_home /home
 
-cp -r /opt/tahlilyar_tmp/* /tmp/*
-cp -r /opt/tahlilyar_var/* /var/*
-cp -r /opt/tahlilyar_home/* /home/*
+cp -r /opt/tahlilyar_tmp/* /tmp/
+cp -r /opt/tahlilyar_var/* /var/
+cp -r /opt/tahlilyar_home/* /home/
 
 cat >> /etc/fstab << "EOF"
 /tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
