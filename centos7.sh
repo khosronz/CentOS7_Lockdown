@@ -16,6 +16,23 @@ sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSI
 sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
 sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
 
+## Rolebac
+
+sudo sed -i 's/Tahlilyar release 2021 (Core)/CentOS Linux release 7.9.2009 (Core)/g' /etc/centos-release
+sudo sed -i 's/Tahlilyar/CentOS Linux/g' /etc/os-release
+sudo sed -i 's/VERSION="2021 (Core)"/VERSION="7 (Core)"/g' /etc/os-release
+sudo sed -i 's/ID="tahlilyar"/ID="centos"/g' /etc/os-release
+sudo sed -i 's/ID_LIKE="tahlilyar"/ID_LIKE="rhel fedora"/g' /etc/os-release
+sudo sed -i 's/VERSION_ID="2021"/VERSION_ID="7"/g' /etc/os-release
+sudo sed -i 's/PRETTY_NAME="Tahlilyar 2021 (Core)"/PRETTY_NAME="CentOS Linux 7 (Core)"/g' /etc/os-release
+sudo sed -i 's/tahlilyar:tahlilyar:2021/centos:centos:7/g' /etc/os-release
+sudo sed -i 's/tahlilyar.com/centos.org/g' /etc/os-release
+sudo sed -i 's/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/CENTOS_MANTISBT_PROJECT="CentOS-7"/g' /etc/os-release
+sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="2021"/CENTOS_MANTISBT_PROJECT_VERSION="7"/g' /etc/os-release
+sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="tahlilyar"/REDHAT_SUPPORT_PRODUCT="centos"/g' /etc/os-release
+sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/REDHAT_SUPPORT_PRODUCT_VERSION="7"/g' /etc/os-release
+
+
 # Ensure /tmp is configured - enabled
 
 ### Hardening Script for CentOS7 Servers.
@@ -145,26 +162,39 @@ crontab -u root -e
 
 
 cat > /etc/systemd/system/aidecheck.service << "EOF"
-[Unit] Description=Aide Check
+[Unit] 
+Description=Aide Check
 
-[Service] Type=simple ExecStart=/usr/sbin/aide --check
+[Service] 
+Type=simple 
+ExecStart=/usr/sbin/aide --check
 
-[Install] WantedBy=multi-user.target
+[Install] 
+WantedBy=multi-user.target
 EOF
 cat > /etc/systemd/system/aidecheck.timer << "EOF"
-[Unit] Description=Aide check every day at 5AM
+[Unit] 
+Description=Aide check every day at 5AM
 
-[Timer] OnCalendar=*-*-* 05:00:00 Unit=aidecheck.service
+[Timer] 
+OnCalendar=*-*-* 05:00:00 
+Unit=aidecheck.service
 
-[Install] WantedBy=multi-user.target
+[Install] 
+WantedBy=multi-user.target
 EOF
 
 
-chown root:root /etc/systemd/system/aidecheck.* # chmod 0644 /etc/systemd/system/aidecheck.*
+chown root:root /etc/systemd/system/aidecheck.* 
+chmod 0644 /etc/systemd/system/aidecheck.*
 systemctl daemon-reload
-systemctl enable aidecheck.service # systemctl --now enable aidecheck.timer
+systemctl enable aidecheck.service 
+systemctl --now enable aidecheck.timer
 
 ## 
+
+##### sudo systemctl stop php7.4-fpm
+
 
 # Ensure separate partition exists for /usr => 2 GB
 # Ensure separate partition exists for /tmp => 2 GB
@@ -186,6 +216,8 @@ sudo fdisk /dev/sdb
     8e
     w
 
+lsblk 
+
 sudo pvcreate /dev/sdb1
 sudo vgcreate share /dev/sdb1
 
@@ -202,19 +234,90 @@ sudo mkfs.ext4 /dev/share/tahlilyar_log
 sudo mkfs.ext4 /dev/share/tahlilyar_log_audit
 sudo mkfs.ext4 /dev/share/tahlilyar_home
 
-mkdir -p /opt/tahlilyar_var
-mkdir -p /opt/tahlilyar_tmp
-mkdir -p /opt/tahlilyar_home
+sudo mkdir -p /opt/tahlilyar_tmp
+sudo mkdir -p /opt/tahlilyar_log_audit
+sudo mkdir -p /opt/tahlilyar_log
+sudo mkdir -p /opt/tahlilyar_var
+sudo mkdir -p /opt/tahlilyar_home
 
-mkdir /var/log/audit
-mkdir /var/log
 
-cp -r /tmp/* /opt/tahlilyar_tmp
-cp -r /tmp/.* /opt/tahlilyar_tmp
-cp -r /var/* /opt/tahlilyar_var
-cp -r /var/.* /opt/tahlilyar_var
-cp -r /home/* /opt/tahlilyar_home
-cp -r /home/.* /opt/tahlilyar_home
+sudo lsof | grep /var
+
+
+sudo systemctl stop mariadb
+sudo systemctl stop httpd
+sudo systemctl stop php-fpm
+sudo systemctl stop redis
+sudo systemctl stop firewalld
+sudo systemctl stop tuned
+sudo systemctl stop crond
+
+sudo lsof | grep /var
+
+sudo mkdir -p /opt/tahlilyar_var
+sudo mkdir -p /opt/tahlilyar_home
+sudo mkdir -p /opt/tahlilyar_tmp
+sudo rsync -va /var/ /opt/tahlilyar_var/
+sudo rsync -va /home/ /opt/tahlilyar_home/
+sudo rsync -va /tmp/ /opt/tahlilyar_tmp/
+
+
+sudo mv /var /var.old
+sudo mv /home /home.old
+sudo mv /tmp /tmp.old
+
+sudo mkdir -p /var
+sudo mkdir -p /home
+sudo mkdir -p /tmp
+
+sudo mount /dev/share/tahlilyar_var /var
+sudo mount /dev/share/tahlilyar_home /home
+sudo mount /dev/share/tahlilyar_tmp /tmp
+
+sudo rsync -va /opt/tahlilyar_var/ /var
+sudo rsync -va /opt/tahlilyar_home/ /home
+sudo rsync -va /opt/tahlilyar_tmp/ /tmp
+
+
+
+sudo vim /etc/fstab
+    ...
+/dev/share/tahlilyar_var /var                       ext4     defaults        0 0
+/dev/share/tahlilyar_home /home                       ext4     defaults        0 0
+/dev/share/tahlilyar_tmp /tmp                       ext4     rw,noexec,nosuid,nodev,bind        0 0
+
+sudo rm -fr /var.old
+sudo rm -fr /home.old
+sudo rm -fr /tmp.old
+
+
+
+# sudo mkdir /var/log/audit
+# sudo mkdir /var/log
+
+# sudo cp -r /tmp/* /opt/tahlilyar_tmp
+# sudo cp -r /var/* /opt/tahlilyar_var
+# sudo cp -r /home/* /opt/tahlilyar_home
+
+
+
+sudo mount /dev/share/tahlilyar_tmp /opt/tahlilyar_tmp
+sudo mount /dev/share/tahlilyar_log_audit /opt/tahlilyar_log_audit
+sudo mount /dev/share/tahlilyar_log /opt/tahlilyar_log
+sudo mount /dev/share/tahlilyar_var /opt/tahlilyar_var
+sudo mount /dev/share/tahlilyar_home /opt/tahlilyar_home
+
+
+
+
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+
 
 mount /dev/share/tahlilyar_tmp /tmp
 mount /dev/share/tahlilyar_log_audit /var/log/audit
