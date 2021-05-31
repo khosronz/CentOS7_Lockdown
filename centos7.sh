@@ -2,38 +2,44 @@
 
 ### Change OS Header Name
 
-sudo sed -i 's/CentOS Linux release 7.9.2009 (Core)/Tahlilyar release 2021 (Core)/g' /etc/centos-release
-sudo sed -i 's/CentOS Linux/Tahlilyar/g' /etc/os-release
-sudo sed -i 's/VERSION="7 (Core)"/VERSION="2021 (Core)"/g' /etc/os-release
-sudo sed -i 's/ID="centos"/ID="tahlilyar"/g' /etc/os-release
-sudo sed -i 's/ID_LIKE="rhel fedora"/ID_LIKE="tahlilyar"/g' /etc/os-release
-sudo sed -i 's/VERSION_ID="7"/VERSION_ID="2021"/g' /etc/os-release
-sudo sed -i 's/PRETTY_NAME="CentOS Linux 7 (Core)"/PRETTY_NAME="Tahlilyar 2021 (Core)"/g' /etc/os-release
-sudo sed -i 's/centos:centos:7/tahlilyar:tahlilyar:2021/g' /etc/os-release
-sudo sed -i 's/centos.org/tahlilyar.com/g' /etc/os-release
-sudo sed -i 's/CENTOS_MANTISBT_PROJECT="CentOS-7"/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/g' /etc/os-release
-sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSION="2021"/g' /etc/os-release
-sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
-sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
+#sudo sed -i 's/CentOS Linux release 7.9.2009 (Core)/Tahlilyar release 2021 (Core)/g' /etc/centos-release
+#sudo sed -i 's/CentOS Linux/Tahlilyar/g' /etc/os-release
+#sudo sed -i 's/VERSION="7 (Core)"/VERSION="2021 (Core)"/g' /etc/os-release
+#sudo sed -i 's/ID="centos"/ID="tahlilyar"/g' /etc/os-release
+#sudo sed -i 's/ID_LIKE="rhel fedora"/ID_LIKE="tahlilyar"/g' /etc/os-release
+#sudo sed -i 's/VERSION_ID="7"/VERSION_ID="2021"/g' /etc/os-release
+#sudo sed -i 's/PRETTY_NAME="CentOS Linux 7 (Core)"/PRETTY_NAME="Tahlilyar 2021 (Core)"/g' /etc/os-release
+#sudo sed -i 's/centos:centos:7/tahlilyar:tahlilyar:2021/g' /etc/os-release
+#sudo sed -i 's/centos.org/tahlilyar.com/g' /etc/os-release
+#sudo sed -i 's/CENTOS_MANTISBT_PROJECT="CentOS-7"/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/g' /etc/os-release
+#sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSION="2021"/g' /etc/os-release
+#sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
+#sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
 
 ## Rolebac
 
-sudo sed -i 's/Tahlilyar release 2021 (Core)/CentOS Linux release 7.9.2009 (Core)/g' /etc/centos-release
-sudo sed -i 's/Tahlilyar/CentOS Linux/g' /etc/os-release
-sudo sed -i 's/VERSION="2021 (Core)"/VERSION="7 (Core)"/g' /etc/os-release
-sudo sed -i 's/ID="tahlilyar"/ID="centos"/g' /etc/os-release
-sudo sed -i 's/ID_LIKE="tahlilyar"/ID_LIKE="rhel fedora"/g' /etc/os-release
-sudo sed -i 's/VERSION_ID="2021"/VERSION_ID="7"/g' /etc/os-release
-sudo sed -i 's/PRETTY_NAME="Tahlilyar 2021 (Core)"/PRETTY_NAME="CentOS Linux 7 (Core)"/g' /etc/os-release
-sudo sed -i 's/tahlilyar:tahlilyar:2021/centos:centos:7/g' /etc/os-release
-sudo sed -i 's/tahlilyar.com/centos.org/g' /etc/os-release
-sudo sed -i 's/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/CENTOS_MANTISBT_PROJECT="CentOS-7"/g' /etc/os-release
-sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="2021"/CENTOS_MANTISBT_PROJECT_VERSION="7"/g' /etc/os-release
-sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="tahlilyar"/REDHAT_SUPPORT_PRODUCT="centos"/g' /etc/os-release
-sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/REDHAT_SUPPORT_PRODUCT_VERSION="7"/g' /etc/os-release
-
+#sudo sed -i 's/Tahlilyar release 2021 (Core)/CentOS Linux release 7.9.2009 (Core)/g' /etc/centos-release
+#sudo sed -i 's/Tahlilyar/CentOS Linux/g' /etc/os-release
+#sudo sed -i 's/VERSION="2021 (Core)"/VERSION="7 (Core)"/g' /etc/os-release
+#sudo sed -i 's/ID="tahlilyar"/ID="centos"/g' /etc/os-release
+#sudo sed -i 's/ID_LIKE="tahlilyar"/ID_LIKE="rhel fedora"/g' /etc/os-release
+#sudo sed -i 's/VERSION_ID="2021"/VERSION_ID="7"/g' /etc/os-release
+#sudo sed -i 's/PRETTY_NAME="Tahlilyar 2021 (Core)"/PRETTY_NAME="CentOS Linux 7 (Core)"/g' /etc/os-release
+#sudo sed -i 's/tahlilyar:tahlilyar:2021/centos:centos:7/g' /etc/os-release
+#sudo sed -i 's/tahlilyar.com/centos.org/g' /etc/os-release
+#sudo sed -i 's/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/CENTOS_MANTISBT_PROJECT="CentOS-7"/g' /etc/os-release
+#sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="2021"/CENTOS_MANTISBT_PROJECT_VERSION="7"/g' /etc/os-release
+#sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="tahlilyar"/REDHAT_SUPPORT_PRODUCT="centos"/g' /etc/os-release
+#sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/REDHAT_SUPPORT_PRODUCT_VERSION="7"/g' /etc/os-release
 
 # Ensure /tmp is configured - enabled
+
+
+
+
+yum install module-init-tools
+
+
 
 ### Hardening Script for CentOS7 Servers.
 AUDITDIR="/tmp/$(hostname -s)_audit"
@@ -121,25 +127,131 @@ EOF
 /usr/sbin/modprobe -n -v usb-storage  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
 
 
-# Ensure /tmp is configured - enabled
-# Ensure /tmp is configured - mount
-# Ensure /dev/shm is configured - /etc/fstab
-# Ensure noexec option set on /dev/shm partition
-echo " ..."
-cat >> /etc/fstab << "EOF"
-/tmp /var/tmp none rw,noexec,nosuid,nodev,bind,size=2G 0 0
-tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
+# Ensure kernel module loading and unloading is collected - auditctl modprobe
+# Ensure kernel module loading and unloading is collected - auditctl rmmod
+
+## For 64 bit
+cat >> /etc/audit/rules.d/modules.rules  << "EOF"
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+-a always,exit -F arch=b64 -S init_module -S delete_module -k modules
+EOF
+
+cat >> /etc/audit/rules.d/MAC_policy.rules << "EOF"
+-w /etc/selinux/ -p wa -k MAC-policy
+-w /usr/share/selinux/ -p wa -k MAC-policy
 EOF
 
 
-mount -a
-df -h
+
+cat >> /etc/audit/rules.d/logins.rules << "EOF"
+-w /var/log/faillog -p wa -k logins
+-w /var/log/lastlog -p wa -k logins
+-w /var/log/tallylog -p wa -k logins
+EOF
+
+
+cat >> /etc/audit/rules.d/session.rules << "EOF"
+-w /var/run/utmp -p wa -k session
+-w /var/log/wtmp -p wa -k logins
+-w /var/log/btmp -p wa -k logins
+EOF
+
+
+cat >> /etc/audit/rules.d/perm_mod.rules << "EOF"
+-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+EOF
+
+
+
+
+cat >> /etc/audit/rules.d/access.rules << "EOF"
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
+EOF
+
+
+cat >> /etc/audit/rules.d/mounts.rules << "EOF"
+-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+EOF
+
+
+cat >> /etc/audit/rules.d/deletion.rules << "EOF"
+-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+EOF
+
+
+cat >> /etc/audit/rules.d/scope.rules << "EOF"
+-w /etc/sudoers -p wa -k scope
+-w /etc/sudoers.d/ -p wa -k scope
+EOF
+
+
+cat >> /etc/audit/rules.d/actions.rules << "EOF"
+-w /var/log/sudo.log -p wa -k actions
+EOF
+
+
+
+cat >> /etc/audit/rules.d/99-finalize.rules << "EOF"
+-e 2
+EOF
+
+cat >> /etc/rsyslog.d/file-create-mode.conf << "EOF"
+$FileCreateMode 0640
+EOF
+
+cat >> /etc/rsyslog.d/loghost.example.com.conf << "EOF"
+*.* @@loghost.example.com
+EOF
+
+
+# Run the following command to reload the rsyslogd configuration:
+
+
+systemctl restart rsyslog
+
+
+#ForwardToSyslog=yes
+
+sudo sed -i 's/#ForwardToSyslog=yes/ForwardToSyslog=yes/g' /etc/systemd/journald.conf
+sudo sed -i 's/#Compress=yes/Compress=yes/g' /etc/systemd/journald.conf
+sudo sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+
+# Ensure permissions on all logfiles are configured
+
+find /var/log -type f -exec chmod g-wx,o-rwx '{}' + -o -type d -exec chmod g-wx,o-rwx '{}' +
 
 # Ensure /tmp is configured - enabled
 # Ensure /tmp is configured - mount
 # Ensure /dev/shm is configured - /etc/fstab
 # Ensure noexec option set on /dev/shm partition
-echo "tmp,shm  ==> enabled, mount, configured, ..."
+
+# echo " ..."
+# cat >> /etc/fstab << "EOF"
+# /tmp /var/tmp none rw,noexec,nosuid,nodev,bind,size=2G 0 0
+# tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
+# EOF
+
+
+# mount -a
+# df -h
+
+# Ensure /tmp is configured - enabled
+# Ensure /tmp is configured - mount
+# Ensure /dev/shm is configured - /etc/fstab
+# Ensure noexec option set on /dev/shm partition
+# echo "tmp,shm  ==> enabled, mount, configured, ..."
 
 
 # Ensure sudo commands use pty
@@ -153,7 +265,7 @@ EOF
 # Ensure AIDE is installed
 echo "Install AIDE ..."
 
-sudo yum install aide
+sudo yum install aide -y
 sudo aide --init
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
@@ -196,6 +308,88 @@ systemctl --now enable aidecheck.timer
 ##### sudo systemctl stop php7.4-fpm
 
 
+sudo yum install chrony -y
+sudo yum install ntp -y
+sudo systemctl --now mask rsyncd
+sudo yum remove rsync
+
+sudo systemctl stop iptables
+
+sudo systemctl stop ip6tables
+
+sudo yum remove iptables-services
+
+
+#/usr/bin/systemctl is-enabled rsyncd ----> masked
+# Ensure IP forwarding is disabled - sysctlc.conf sysctl.d
+
+
+# grep -Els '^s*net.ipv4.ip_forwards*=s*1' /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri 's/^s*(net.ipv4.ip_forwards*)(=)(s*S+b).*$/# *REMOVED* 1/' $filename; 
+# done; 
+# sysctl -w net.ipv4.ip_forward=0; 
+# sysctl -w net.ipv4.route.flush=1
+
+
+grep -Els '^s*net.ipv6.conf.all.forwardings*=s*1' /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri 's/^s*(net.ipv6.conf.all.forwardings*)(=)(s*S+b).*$/# *REMOVED* 1/' 
+$filename; done; sysctl -w net.ipv6.conf.all.forwarding=0; sysctl -w net.ipv6.route.flush=1
+
+# Ensure packet redirect sending is disabled - 'net.ipv4.conf.all.send_redirects = 0'
+
+sysctl -w net.ipv4.conf.all.send_redirects=0 
+sysctl -w net.ipv4.conf.default.send_redirects=0 
+sysctl -w net.ipv4.route.flush=1
+
+
+
+
+##/usr/sbin/sysctl net.ipv4.conf.default.send_redirects
+
+#  Ensure packet redirect sending is disabled - files 'net.ipv4.conf.all.send_redirects = 0'
+
+cat > /etc/sysctl.d/limit313.conf << "EOF"
+net.ipv4.conf.all.send_redirects = 0 
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.all.accept_source_route = 0 
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+net.ipv6.conf.default.accept_source_route = 0
+net.ipv6.conf.all.accept_redirects = 0 
+net.ipv6.conf.default.accept_redirects = 0
+net.ipv4.route.flush=1
+
+EOF
+
+sysctl -w net.ipv4.conf.all.send_redirects=0 
+sysctl -w net.ipv4.conf.default.send_redirects=0 
+sysctl -w net.ipv4.conf.all.accept_source_route=0 
+sysctl -w net.ipv4.conf.default.accept_source_route=0 
+sysctl -w net.ipv6.conf.all.accept_redirects=0 
+sysctl -w net.ipv6.conf.default.accept_redirects=0 
+sysctl -w net.ipv6.route.flush=1
+
+#  Ensure source routed packets are not accepted - files 'net.ipv4.conf.all.accept_source_route = 0'
+
+#
+
+# vim /etc/default/grub # and change GRUB_CMDLINE_LINUX="..." to GRUB_CMDLINE_LINUX='audit=1'
+# ## before is ----->     GRUB_CMDLINE_LINUX="rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet" OR GRUB_CMDLINE_LINUX='audit_backlog_limit=8192'
+#     GRUB_CMDLINE_LINUX='audit=1' 
+#     GRUB_CMDLINE_LINUX='audit_backlog_limit=8192'
+
+# grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
+# Ensure audit log storage size is configured
+sed -i 's/^max_log_file = 8$/max_log_file = 1024/' /etc/audit/auditd.conf
+
+#  Ensure audit logs are not automatically deleted
+sed -i 's/^max_log_file_action = ROTATE$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf
+
+# Ensure system is disabled when audit logs are full - 'admin_space_left_action = halt'
+
+
+
+
 # Ensure separate partition exists for /usr => 2 GB
 # Ensure separate partition exists for /tmp => 2 GB
 # Ensure separate partition exists for /var => 5 GB
@@ -204,141 +398,147 @@ systemctl --now enable aidecheck.timer
 # Ensure separate partition exists for /var/log/audit => 1G
 # Ensure separate partition exists for /home => 3 GB
 
-sudo yum install lvm
+# sudo yum install lvm -y
 
-sudo fdisk /dev/sdb
-    m
-    o
-    n
-    p    
+# sudo fdisk /dev/sdb
+#     m
+#     o
+#     n
+#     p    
 
-    t
-    8e
-    w
+#     t
+#     8e
+#     w
 
-lsblk 
+# lsblk 
 
-sudo pvcreate /dev/sdb1
-sudo vgcreate share /dev/sdb1
+# sudo pvcreate /dev/sdb1
+# sudo vgcreate share /dev/sdb1
 
-sudo lvcreate --size 5G --name tahlilyar_var share
-sudo lvcreate --size 1G --name tahlilyar_tmp share
-sudo lvcreate --size 1G --name tahlilyar_log share
-sudo lvcreate --size 1G --name tahlilyar_log_audit share
-sudo lvcreate --size 3G --name tahlilyar_home share
-
-
-sudo mkfs.ext4 /dev/share/tahlilyar_var
-sudo mkfs.ext4 /dev/share/tahlilyar_tmp
-sudo mkfs.ext4 /dev/share/tahlilyar_log
-sudo mkfs.ext4 /dev/share/tahlilyar_log_audit
-sudo mkfs.ext4 /dev/share/tahlilyar_home
-
-sudo mkdir -p /opt/tahlilyar_tmp
-sudo mkdir -p /opt/tahlilyar_log_audit
-sudo mkdir -p /opt/tahlilyar_log
-sudo mkdir -p /opt/tahlilyar_var
-sudo mkdir -p /opt/tahlilyar_home
+# sudo lvcreate --size 5G --name tahlilyar_var share
+# sudo lvcreate --size 1G --name tahlilyar_tmp share
+# sudo lvcreate --size 1G --name tahlilyar_log share
+# sudo lvcreate --size 1G --name tahlilyar_log_audit share
+# sudo lvcreate --size 3G --name tahlilyar_home share
 
 
-sudo lsof | grep /var
+# sudo mkfs.ext4 /dev/share/tahlilyar_var
+# sudo mkfs.ext4 /dev/share/tahlilyar_tmp
+# sudo mkfs.ext4 /dev/share/tahlilyar_log
+# sudo mkfs.ext4 /dev/share/tahlilyar_log_audit
+# sudo mkfs.ext4 /dev/share/tahlilyar_home
+
+# sudo mkdir -p /opt/tahlilyar_tmp
+# sudo mkdir -p /opt/tahlilyar_log_audit
+# sudo mkdir -p /opt/tahlilyar_log
+# sudo mkdir -p /opt/tahlilyar_var
+# sudo mkdir -p /opt/tahlilyar_home
 
 
-sudo systemctl stop mariadb
-sudo systemctl stop httpd
-sudo systemctl stop php-fpm
-sudo systemctl stop redis
-sudo systemctl stop firewalld
-sudo systemctl stop tuned
-sudo systemctl stop crond
-
-sudo lsof | grep /var
-
-sudo mkdir -p /opt/tahlilyar_var
-sudo mkdir -p /opt/tahlilyar_home
-sudo mkdir -p /opt/tahlilyar_tmp
-sudo rsync -va /var/ /opt/tahlilyar_var/
-sudo rsync -va /home/ /opt/tahlilyar_home/
-sudo rsync -va /tmp/ /opt/tahlilyar_tmp/
+# sudo lsof | grep /var
 
 
-sudo mv /var /var.old
-sudo mv /home /home.old
-sudo mv /tmp /tmp.old
+# sudo systemctl stop mariadb
+# sudo systemctl stop httpd
+# sudo systemctl stop php-fpm
+# sudo systemctl stop redis
+# sudo systemctl stop firewalld
+# sudo systemctl stop tuned
+# sudo systemctl stop crond
 
-sudo mkdir -p /var
-sudo mkdir -p /home
-sudo mkdir -p /tmp
+# sudo lsof | grep /var
 
-sudo mount /dev/share/tahlilyar_var /var
-sudo mount /dev/share/tahlilyar_home /home
-sudo mount /dev/share/tahlilyar_tmp /tmp
-
-sudo rsync -va /opt/tahlilyar_var/ /var
-sudo rsync -va /opt/tahlilyar_home/ /home
-sudo rsync -va /opt/tahlilyar_tmp/ /tmp
+# sudo mkdir -p /opt/tahlilyar_var
+# sudo mkdir -p /opt/tahlilyar_home
+# sudo mkdir -p /opt/tahlilyar_tmp
+# sudo rsync -va /var/ /opt/tahlilyar_var/
+# sudo rsync -va /home/ /opt/tahlilyar_home/
+# sudo rsync -va /tmp/ /opt/tahlilyar_tmp/
 
 
+# sudo mv /var /var.old
+# #sudo mv /home /home.old
+# sudo mv /tmp /tmp.old
 
-sudo vim /etc/fstab
-    ...
-/dev/share/tahlilyar_var /var                       ext4     defaults        0 0
-/dev/share/tahlilyar_home /home                       ext4     defaults        0 0
-/dev/share/tahlilyar_tmp /tmp                       ext4     rw,noexec,nosuid,nodev,bind        0 0
+# sudo mkdir -p /var
+# #sudo mkdir -p /home
+# sudo mkdir -p /tmp
 
-sudo rm -fr /var.old
-sudo rm -fr /home.old
-sudo rm -fr /tmp.old
+# sudo mount /dev/share/tahlilyar_var /var
+# #sudo mount /dev/share/tahlilyar_home /home
+# sudo mount /dev/share/tahlilyar_tmp /tmp
+
+# sudo rsync -va /opt/tahlilyar_var/ /var
+# #sudo rsync -va /opt/tahlilyar_home/ /home
+# sudo rsync -va /opt/tahlilyar_tmp/ /tmp
 
 
 
-# sudo mkdir /var/log/audit
-# sudo mkdir /var/log
+# sudo rsync -va /opt/tahlilyar_var/ /var
 
-# sudo cp -r /tmp/* /opt/tahlilyar_tmp
-# sudo cp -r /var/* /opt/tahlilyar_var
-# sudo cp -r /home/* /opt/tahlilyar_home
-
-
-
-sudo mount /dev/share/tahlilyar_tmp /opt/tahlilyar_tmp
-sudo mount /dev/share/tahlilyar_log_audit /opt/tahlilyar_log_audit
-sudo mount /dev/share/tahlilyar_log /opt/tahlilyar_log
-sudo mount /dev/share/tahlilyar_var /opt/tahlilyar_var
-sudo mount /dev/share/tahlilyar_home /opt/tahlilyar_home
+# sudo vim /etc/fstab
+#     ...
+# /dev/share/tahlilyar_var /var                       ext4     defaults        0 0
+# #/dev/share/tahlilyar_home /home                       ext4     defaults        0 0
+# /dev/share/tahlilyar_tmp /tmp                       ext4     rw,noexec,nosuid,nodev,bind        0 0
 
 
 
+# mount -a
 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
+# sudo rm -fr /var.old
+# sudo rm -fr /home.old
+# sudo rm -fr /tmp.old
 
 
-mount /dev/share/tahlilyar_tmp /tmp
-mount /dev/share/tahlilyar_log_audit /var/log/audit
-mount /dev/share/tahlilyar_log /var/log
-mount /dev/share/tahlilyar_var /var
-mount /dev/share/tahlilyar_home /home
 
-cp -r /opt/tahlilyar_tmp/* /tmp/
-cp -r /opt/tahlilyar_var/* /var/
-cp -r /opt/tahlilyar_home/* /home/
+# # sudo mkdir /var/log/audit
+# # sudo mkdir /var/log
 
-cat >> /etc/fstab << "EOF"
-/tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
-tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
-/dev/share/tahlilyar_tmp /tmp none rw,noexec,nosuid,nodev,bind 0 0
-/dev/share/tahlilyar_log_audit /var/log/audit none rw,noexec,nosuid,nodev,bind 0 0
-/dev/share/tahlilyar_log /var/log none rw,noexec,nosuid,nodev,bind 0 0
-/dev/share/tahlilyar_var /var none rw,noexec,nosuid,nodev,bind 0 0
-/dev/share/tahlilyar_home /home none rw,noexec,nosuid,nodev,bind 0 0
+# # sudo cp -r /tmp/* /opt/tahlilyar_tmp
+# # sudo cp -r /var/* /opt/tahlilyar_var
+# # sudo cp -r /home/* /opt/tahlilyar_home
 
-EOF
+
+
+# sudo mount /dev/share/tahlilyar_tmp /opt/tahlilyar_tmp
+# sudo mount /dev/share/tahlilyar_log_audit /opt/tahlilyar_log_audit
+# sudo mount /dev/share/tahlilyar_log /opt/tahlilyar_log
+# sudo mount /dev/share/tahlilyar_var /opt/tahlilyar_var
+# sudo mount /dev/share/tahlilyar_home /opt/tahlilyar_home
+
+
+
+
+# # 
+# # 
+# # 
+# # 
+# # 
+# # 
+# # 
+
+
+# mount /dev/share/tahlilyar_tmp /tmp
+# mount /dev/share/tahlilyar_log_audit /var/log/audit
+# mount /dev/share/tahlilyar_log /var/log
+# mount /dev/share/tahlilyar_var /var
+# mount /dev/share/tahlilyar_home /home
+
+# cp -r /opt/tahlilyar_tmp/* /tmp/
+# cp -r /opt/tahlilyar_var/* /var/
+# cp -r /opt/tahlilyar_home/* /home/
+
+# cat >> /etc/fstab << "EOF"
+# /tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
+# tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
+# /dev/share/tahlilyar_tmp /tmp none rw,noexec,nosuid,nodev,bind 0 0
+# /dev/share/tahlilyar_log_audit /var/log/audit none rw,noexec,nosuid,nodev,bind 0 0
+# /dev/share/tahlilyar_log /var/log none rw,noexec,nosuid,nodev,bind 0 0
+# /dev/share/tahlilyar_var /var none rw,noexec,nosuid,nodev,bind 0 0
+# /dev/share/tahlilyar_home /home none rw,noexec,nosuid,nodev,bind 0 0
+
+# EOF
 
 ## 
 
@@ -487,6 +687,9 @@ chmod og-rwx /etc/cron.d
 /bin/rm -f /etc/cron.deny
 
 echo "Creating Banner..."
+
+#echo 'Authorized uses only. All activity may be monitored and reported.' > /etc/issue
+
 sed -i "s/\#Banner none/Banner \/etc\/issue\.net/" /etc/ssh/sshd_config
 cp -p /etc/issue.net $AUDITDIR/issue.net_$TIME.bak
 cat > /etc/issue.net << 'EOF'
@@ -531,6 +734,14 @@ sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_conf
 sed -i 's/#PermitUserEnvironment no/PermitUserEnvironment no/g' /etc/ssh/sshd_config
 sed -i 's/#ClientAliveInterval 0/ClientAliveInterval 300/g' /etc/ssh/sshd_config
 sed -i 's/#ClientAliveCountMax 3/ClientAliveCountMax 0/g' /etc/ssh/sshd_config
+sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
+sed -i 's/UsePAM yes/UsePAM yes/g' /etc/ssh/sshd_config
+sed -i 's/AllowTcpForwarding yes/AllowTcpForwarding no/g' /etc/ssh/sshd_config
+echo 'maxstartups 10:30:60' >> /etc/ssh/sshd_config
+sed -i 's/#MaxSessions 10/MaxSessions 10/g' /etc/ssh/sshd_config
+
+
+
 echo "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"  >> /etc/ssh/sshd_config
 chown root:root /etc/ssh/sshd_config
 chmod 600 /etc/ssh/sshd_config
@@ -556,9 +767,38 @@ chown root:root /etc/shadow
 chown root:root /etc/gshadow
 chown root:root /etc/group
 
+# Ensure password creation requirements are configured - dcredit
+sed -i 's/# minlen = 9/minlen = 14/g' /etc/security/pwquality.conf 
+sed -i 's/# minclass = 0/minclass = 4/g' /etc/security/pwquality.conf 
+sed -i 's/# dcredit = 1/dcredit = -1/g' /etc/security/pwquality.conf 
+sed -i 's/# ucredit = 1/ucredit = -1/g' /etc/security/pwquality.conf 
+sed -i 's/# ocredit = 1/ocredit = -1/g' /etc/security/pwquality.conf 
+sed -i 's/# lcredit = 1/lcredit = -1/g' /etc/security/pwquality.conf 
+
+echo 'password requisite pam_pwquality.so try_first_pass retry=3' >> /etc/pam.d/password-auth
+sed -i 's/password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=/password  requisite   pam_pwquality.so try_first_pass retry=3/g' /etc/pam.d/system-auth
+
+# ----tttt !!!!!
+# Ensure lockout for failed password attempts is configured - password-auth 'auth [default=die] pam_faillock.so'
+
+
+#faillock --user <username> --reset
+
+
+#pam_tally2 -u <username> --reset
+
+
 # Ensure sticky bit is set on all world-writable directories
 echo "Setting Sticky Bit on All World-Writable Directories..."
-df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null | xargs chmod a+t >> $AUDITDIR/sticky_on_world_$TIME.log
+# df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null | xargs chmod a+t >> $AUDITDIR/sticky_on_world_$TIME.log
+{
+  read _                           # consume header
+  while IFS= read -r dirname; do   # ...iterate over later lines...
+    find "$dirname" -xdev -type d \
+      '(' -perm -0002 -a ! -perm -1000 ')' \
+      -exec chmod a+t '{}' + 2>/dev/null
+  done
+} < <(df --output=target --local)  # tell df to emit only the one column you want
 
 echo "Searching for world writable files..."
 df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002 >> $AUDITDIR/world_writable_files_$TIME.log
@@ -864,6 +1104,12 @@ pam_su='/etc/pam.d/su'
 line_num="$(grep -n "^\#auth[[:space:]]*required[[:space:]]*pam_wheel.so[[:space:]]*use_uid" ${pam_su} | cut -d: -f1)"
 sed -i "${line_num} a auth		required	pam_wheel.so use_uid" ${pam_su}
 
+echo "Clea history" 
+history -c && history -w
+
+
 echo ""
 echo "Successfully Completed"
 echo "Please check $AUDITDIR"
+
+
