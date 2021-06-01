@@ -352,7 +352,7 @@ sudo systemctl enable chronyd
 sed -i 's/inet_interfaces = localhost/inet_interfaces = loopback-only/g' /etc/postfix/main.cf
 systemctl restart postfix
 
-sed -i 's/GRUB_CMDLINE_LINUX=\"crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos\/root rd.lvm.lv=centos\/swap rhgb quiet\"/GRUB_CMDLINE_LINUX=\"ipv6.disable=1\"/g' /etc/default/grub
+sed -i 's/GRUB_CMDLINE_LINUX=\"crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos\/root rd.lvm.lv=centos\/swap rhgb quiet\"/GRUB_CMDLINE_LINUX=\"audit=1\"/g' /etc/default/grub
 
 
 grub2-mkconfig > /boot/grub2/grub.cfg
@@ -388,28 +388,28 @@ EOF
 
 sed -i 's/#Port 22/Port 9876/g' /etc/ssh/sshd_config
 
-yum install firewalld
-systemctl start firewalld 
-systemctl enable firewalld 
-firewall-cmd --permanent --add-port=9876/tcp 
-firewall-cmd --permanent --add-port=22/tcp 
-firewall-cmd --reload 
-systemctl restart sshd
-
-sudo yum -y install firewalld
-firewall-cmd --permanent --allow-port=9876/tcp
-firewall-cmd --permanent --allow-port=80/tcp
-firewall-cmd --permanent --allow-port=443/tcp
-firewall-cmd --permanent --remove-port=22/tcp
-firewall-cmd --permanent --remove-service=ssh
-firewall-cmd --reload
-
+sudo yum install firewalld
+sudo systemctl start firewalld 
+sudo systemctl enable firewalld 
 
 sudo yum install policycoreutils-python
 
 sudo semanage port -a -t ssh_port_t -p tcp 9876
 sudo semanage port -m -t ssh_port_t -p tcp 9876
 
+
+sudo firewall-cmd --permanent --add-port=9876/tcp 
+sudo firewall-cmd --permanent --add-port=22/tcp 
+sudo firewall-cmd --reload 
+sudo systemctl restart sshd
+
+firewall-cmd --permanent --allow-port=9876/tcp
+firewall-cmd --permanent --allow-port=80/tcp
+firewall-cmd --permanent --allow-port=443/tcp
+firewall-cmd --permanent --remove-port=22/tcp
+firewall-cmd --permanent --remove-service=ssh
+firewall-cmd --reload
+firewall-cmd --list-all
 
 # iptables -P INPUT DROP 
 # iptables -P OUTPUT DROP 
