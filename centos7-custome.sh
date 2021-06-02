@@ -2,21 +2,21 @@
 
 ### Change OS Header Name
 
-#sudo sed -i 's/CentOS Linux release 7.9.2009 (Core)/Tahlilyar release 2021 (Core)/g' /etc/centos-release
-#sudo sed -i 's/CentOS Linux/Tahlilyar/g' /etc/os-release
-#sudo sed -i 's/VERSION="7 (Core)"/VERSION="2021 (Core)"/g' /etc/os-release
-#sudo sed -i 's/ID="centos"/ID="tahlilyar"/g' /etc/os-release
-#sudo sed -i 's/ID_LIKE="rhel fedora"/ID_LIKE="tahlilyar"/g' /etc/os-release
-#sudo sed -i 's/VERSION_ID="7"/VERSION_ID="2021"/g' /etc/os-release
-#sudo sed -i 's/PRETTY_NAME="CentOS Linux 7 (Core)"/PRETTY_NAME="Tahlilyar 2021 (Core)"/g' /etc/os-release
-#sudo sed -i 's/centos:centos:7/tahlilyar:tahlilyar:2021/g' /etc/os-release
-#sudo sed -i 's/centos.org/tahlilyar.com/g' /etc/os-release
-#sudo sed -i 's/CENTOS_MANTISBT_PROJECT="CentOS-7"/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/g' /etc/os-release
-#sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSION="2021"/g' /etc/os-release
-#sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
-#sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
+sudo sed -i 's/CentOS Linux release 7.9.2009 (Core)/Tahlilyar release 2021 (Core)/g' /etc/centos-release
+sudo sed -i 's/CentOS Linux/Tahlilyar/g' /etc/os-release
+sudo sed -i 's/VERSION="7 (Core)"/VERSION="2021 (Core)"/g' /etc/os-release
+sudo sed -i 's/ID="centos"/ID="tahlilyar"/g' /etc/os-release
+sudo sed -i 's/ID_LIKE="rhel fedora"/ID_LIKE="tahlilyar"/g' /etc/os-release
+sudo sed -i 's/VERSION_ID="7"/VERSION_ID="2021"/g' /etc/os-release
+sudo sed -i 's/PRETTY_NAME="CentOS Linux 7 (Core)"/PRETTY_NAME="Tahlilyar 2021 (Core)"/g' /etc/os-release
+sudo sed -i 's/centos:centos:7/tahlilyar:tahlilyar:2021/g' /etc/os-release
+sudo sed -i 's/centos.org/tahlilyar.com/g' /etc/os-release
+sudo sed -i 's/CENTOS_MANTISBT_PROJECT="CentOS-7"/CENTOS_MANTISBT_PROJECT="Tahlilyar-2021"/g' /etc/os-release
+sudo sed -i 's/CENTOS_MANTISBT_PROJECT_VERSION="7"/CENTOS_MANTISBT_PROJECT_VERSION="2021"/g' /etc/os-release
+sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="centos"/REDHAT_SUPPORT_PRODUCT="tahlilyar"/g' /etc/os-release
+sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="7"/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/g' /etc/os-release
 
-## Rolebac
+## Roleback
 
 #sudo sed -i 's/Tahlilyar release 2021 (Core)/CentOS Linux release 7.9.2009 (Core)/g' /etc/centos-release
 #sudo sed -i 's/Tahlilyar/CentOS Linux/g' /etc/os-release
@@ -32,24 +32,17 @@
 #sudo sed -i 's/REDHAT_SUPPORT_PRODUCT="tahlilyar"/REDHAT_SUPPORT_PRODUCT="centos"/g' /etc/os-release
 #sudo sed -i 's/REDHAT_SUPPORT_PRODUCT_VERSION="2021"/REDHAT_SUPPORT_PRODUCT_VERSION="7"/g' /etc/os-release
 
-# Ensure /tmp is configured - enabled
-
-
 sudo yum -y install epel-release
+sudo yum -y install screen
 
 sudo yum install module-init-tools
 
-
-
 ### Hardening Script for CentOS7 Servers.
+
 AUDITDIR="/tmp/$(hostname -s)_audit"
 TIME="$(date +%F_%T)"
-
 mkdir -p $AUDITDIR
-# Ensure mounting of cramfs filesystems is disabled - modprobe
-# Ensure mounting of squashfs filesystems is disabled - modprobe
-# Ensure mounting of udf filesystems is disabled - modprobe
-# Disable USB Storage - modprobe
+
 
 ls -l /lib/modules/$(uname -r)/kernel/fs | grep cramfs 
 ls -l /lib/modules/$(uname -r)/kernel/fs | grep freevxfs 
@@ -130,9 +123,6 @@ EOF
 /usr/sbin/modprobe -n -v usb-storage  | /usr/bin/awk '{print} END {if (NR == 0) print "fail"}'
 
 
-# Ensure kernel module loading and unloading is collected - auditctl modprobe
-# Ensure kernel module loading and unloading is collected - auditctl rmmod
-
 ## For 64 bit
 cat >> /etc/audit/rules.d/modules.rules  << "EOF"
 -w /sbin/insmod -p x -k modules
@@ -146,21 +136,17 @@ cat >> /etc/audit/rules.d/MAC_policy.rules << "EOF"
 -w /usr/share/selinux/ -p wa -k MAC-policy
 EOF
 
-
-
 cat >> /etc/audit/rules.d/logins.rules << "EOF"
 -w /var/log/faillog -p wa -k logins
 -w /var/log/lastlog -p wa -k logins
 -w /var/log/tallylog -p wa -k logins
 EOF
 
-
 cat >> /etc/audit/rules.d/session.rules << "EOF"
 -w /var/run/utmp -p wa -k session
 -w /var/log/wtmp -p wa -k logins
 -w /var/log/btmp -p wa -k logins
 EOF
-
 
 cat >> /etc/audit/rules.d/perm_mod.rules << "EOF"
 -a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
@@ -170,9 +156,6 @@ cat >> /etc/audit/rules.d/perm_mod.rules << "EOF"
 -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
 -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
 EOF
-
-
-
 
 cat >> /etc/audit/rules.d/access.rules << "EOF"
 -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
@@ -187,24 +170,19 @@ cat >> /etc/audit/rules.d/mounts.rules << "EOF"
 -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
 EOF
 
-
 cat >> /etc/audit/rules.d/deletion.rules << "EOF"
 -a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
 -a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
 EOF
-
 
 cat >> /etc/audit/rules.d/scope.rules << "EOF"
 -w /etc/sudoers -p wa -k scope
 -w /etc/sudoers.d/ -p wa -k scope
 EOF
 
-
 cat >> /etc/audit/rules.d/actions.rules << "EOF"
 -w /var/log/sudo.log -p wa -k actions
 EOF
-
-
 
 cat >> /etc/audit/rules.d/99-finalize.rules << "EOF"
 -e 2
@@ -218,12 +196,9 @@ cat >> /etc/rsyslog.d/loghost.example.com.conf << "EOF"
 *.* @@loghost.example.com
 EOF
 
-
 # Run the following command to reload the rsyslogd configuration:
 
-
 systemctl restart rsyslog
-
 
 #ForwardToSyslog=yes
 
@@ -234,31 +209,6 @@ sudo sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
 # Ensure permissions on all logfiles are configured
 
 find /var/log -type f -exec chmod g-wx,o-rwx '{}' + -o -type d -exec chmod g-wx,o-rwx '{}' +
-
-# Ensure /tmp is configured - enabled
-# Ensure /tmp is configured - mount
-# Ensure /dev/shm is configured - /etc/fstab
-# Ensure noexec option set on /dev/shm partition
-
-# echo " ..."
-# cat >> /etc/fstab << "EOF"
-# /tmp /var/tmp none rw,noexec,nosuid,nodev,bind,size=2G 0 0
-# tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
-# EOF
-
-
-# mount -a
-# df -h
-
-# Ensure /tmp is configured - enabled
-# Ensure /tmp is configured - mount
-# Ensure /dev/shm is configured - /etc/fstab
-# Ensure noexec option set on /dev/shm partition
-# echo "tmp,shm  ==> enabled, mount, configured, ..."
-
-
-# Ensure sudo commands use pty
-# Ensure sudo log file exists
 
 cat > /etc/sudoers.d/black.conf << "EOF"
 Defaults use_pty
@@ -306,11 +256,6 @@ systemctl daemon-reload
 systemctl enable aidecheck.service 
 systemctl --now enable aidecheck.timer
 
-## 
-
-##### sudo systemctl stop php7.4-fpm
-
-
 sudo yum install chrony -y
 sudo yum install ntp -y
 
@@ -341,30 +286,21 @@ sudo sed -i 's/#server 0.centos.pool.ntp.org iburst/server 10.100.197.4/g' /etc/
 
 sudo sed -i 's/OPTIONS=\"\"/OPTIONS=\"-u chrony\"/g' /etc/sysconfig/chronyd
 
-
-
 sudo systemctl restart ntpd
 sudo systemctl restart chronyd
 sudo systemctl enable ntpd
 sudo systemctl enable chronyd
-
 
 sed -i 's/inet_interfaces = localhost/inet_interfaces = loopback-only/g' /etc/postfix/main.cf
 systemctl restart postfix
 
 sed -i 's/GRUB_CMDLINE_LINUX=\"crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos\/root rd.lvm.lv=centos\/swap rhgb quiet\"/GRUB_CMDLINE_LINUX=\"audit=1\"/g' /etc/default/grub
 
-
 grub2-mkconfig > /boot/grub2/grub.cfg
-
 
 sudo yum install tcp_wrappers
 
-
 echo 'sshd : ALL' > /etc/hosts.deny
-
-
-
 
 cat > /etc/hosts.allow << "EOF"
 sshd : 192.168.188.0/24
@@ -388,15 +324,14 @@ EOF
 
 sed -i 's/#Port 22/Port 9876/g' /etc/ssh/sshd_config
 
-sudo yum install firewalld
+sudo yum -y install firewalld
+sudo yum -y install policycoreutils-python
+
 sudo systemctl start firewalld 
 sudo systemctl enable firewalld 
 
-sudo yum install policycoreutils-python
-
 sudo semanage port -a -t ssh_port_t -p tcp 9876
 sudo semanage port -m -t ssh_port_t -p tcp 9876
-
 
 sudo firewall-cmd --permanent --add-port=9876/tcp 
 sudo firewall-cmd --permanent --add-port=22/tcp 
@@ -411,38 +346,13 @@ firewall-cmd --permanent --remove-service=ssh
 firewall-cmd --reload
 firewall-cmd --list-all
 
-# iptables -P INPUT DROP 
-# iptables -P OUTPUT DROP 
-# iptables -P FORWARD DROP
-
-
-
-
-#/usr/bin/systemctl is-enabled rsyncd ----> masked
-# Ensure IP forwarding is disabled - sysctlc.conf sysctl.d
-
-
-# grep -Els '^s*net.ipv4.ip_forwards*=s*1' /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri 's/^s*(net.ipv4.ip_forwards*)(=)(s*S+b).*$/# *REMOVED* 1/' $filename; 
-# done; 
-# sysctl -w net.ipv4.ip_forward=0; 
-# sysctl -w net.ipv4.route.flush=1
-
 
 grep -Els '^s*net.ipv6.conf.all.forwardings*=s*1' /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri 's/^s*(net.ipv6.conf.all.forwardings*)(=)(s*S+b).*$/# *REMOVED* 1/' 
 $filename; done; sysctl -w net.ipv6.conf.all.forwarding=0; sysctl -w net.ipv6.route.flush=1
 
-# Ensure packet redirect sending is disabled - 'net.ipv4.conf.all.send_redirects = 0'
-
 sysctl -w net.ipv4.conf.all.send_redirects=0 
 sysctl -w net.ipv4.conf.default.send_redirects=0 
 sysctl -w net.ipv4.route.flush=1
-
-
-
-
-##/usr/sbin/sysctl net.ipv4.conf.default.send_redirects
-
-#  Ensure packet redirect sending is disabled - files 'net.ipv4.conf.all.send_redirects = 0'
 
 cat > /etc/sysctl.d/limit313.conf << "EOF"
 net.ipv4.conf.all.send_redirects = 0 
@@ -465,110 +375,13 @@ sysctl -w net.ipv6.conf.all.accept_redirects=0
 sysctl -w net.ipv6.conf.default.accept_redirects=0 
 sysctl -w net.ipv6.route.flush=1
 
-#  Ensure source routed packets are not accepted - files 'net.ipv4.conf.all.accept_source_route = 0'
-
-#
-
-# vim /etc/default/grub # and change GRUB_CMDLINE_LINUX="..." to GRUB_CMDLINE_LINUX='audit=1'
-# ## before is ----->     GRUB_CMDLINE_LINUX="rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet" OR GRUB_CMDLINE_LINUX='audit_backlog_limit=8192'
-#     GRUB_CMDLINE_LINUX='audit=1' 
-#     GRUB_CMDLINE_LINUX='audit_backlog_limit=8192'
-
-# grub2-mkconfig -o /boot/grub2/grub.cfg
-
-
-# Ensure audit log storage size is configured
 sed -i 's/^max_log_file = 8$/max_log_file = 32/' /etc/audit/auditd.conf
 
-#  Ensure audit logs are not automatically deleted
 sed -i 's/^max_log_file_action = ROTATE$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf
 
-# Ensure system is disabled when audit logs are full - 'admin_space_left_action = halt'
 sed -i 's/space_left_action = SYSLOG/space_left_action = email/g' /etc/audit/auditd.conf
 sed -i 's/action_mail_acct.*/action_mail_acct = root/g' /etc/audit/auditd.conf
 sed -i 's/admin_space_left_action = SYSLOG/admin_space_left_action = halt/g' /etc/audit/auditd.conf
-
-
-
-# Ensure separate partition exists for /usr => 2 GB
-# Ensure separate partition exists for /tmp => 2 GB
-# Ensure separate partition exists for /var => 5 GB
-# Ensure separate partition exists for /var/tmp => 1G
-# Ensure separate partition exists for /var/log => 1G
-# Ensure separate partition exists for /var/log/audit => 1G
-# Ensure separate partition exists for /home => 3 GB
-
-# sudo yum install lvm -y
-# sudo yum install lvm2 -y
-
-# sudo fdisk /dev/sdb
-#     m
-#     o
-#     n
-#     p    
-
-#     t
-#     8e
-#     w
-
-# lsblk 
-
-# sudo pvcreate /dev/sdb1
-# sudo vgcreate share /dev/sdb1
-
-sudo lvcreate -n tmp -L 2G share
-mkfs.xfs /dev/share/tmp
-
-vim /etc/fstab
-    /tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
-
-sudo lvcreate -n var_log_audit -L 1G share
-sudo mkfs.xfs /dev/share/var_log_audit
-sudo mkdir -p /mnt/var_log_audit
-sudo mount /dev/share/var_log_audit /mnt/var_log_audit
-sudo rsync -aqxP /var/log/audit/* /mnt/var_log_audit
-sudo umount /mnt/var_log_audit/ 
-sudo df -h /mnt/var_log_audit
-sudo vim /etc/fstab
-    /dev/share/var_log_audit /var/log/audit  xfs     defaults   0 0
-sudo mount -a
-sudo df -hT | grep /var/log/audit
-sudo vim /etc/fstab
-    tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
-    
-sudo mount -a
-mount -o remount,noexec /dev/shm
-# # 
-# # 
-# # 
-# # 
-# # 
-# # 
-# # 
-
-
-# mount /dev/share/tahlilyar_tmp /tmp
-# mount /dev/share/tahlilyar_log_audit /var/log/audit
-# mount /dev/share/tahlilyar_log /var/log
-# mount /dev/share/tahlilyar_var /var
-# mount /dev/share/tahlilyar_home /home
-
-# cp -r /opt/tahlilyar_tmp/* /tmp/
-# cp -r /opt/tahlilyar_var/* /var/
-# cp -r /opt/tahlilyar_home/* /home/
-
-# cat >> /etc/fstab << "EOF"
-# /tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
-# tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
-# /dev/share/tahlilyar_tmp /tmp none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_log_audit /var/log/audit none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_log /var/log none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_var /var none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_home /home none rw,noexec,nosuid,nodev,bind 0 0
-
-# EOF
-
-## 
 
 echo "Removing GCC compiler..."
 yum -y remove gcc*
@@ -610,7 +423,6 @@ done
 
 echo "Upgrading password hashing algorithm to SHA512..."
 authconfig --passalgo=sha512 --update
-
 
 echo "Setting core dump security limits..."
 echo '* hard core 0' > /etc/security/limits.conf
@@ -726,7 +538,7 @@ cat > /etc/issue.net << 'EOF'
 /------------------------------------------------------------------------\
 |                       *** NOTICE TO USERS ***                          |
 |                                                                        |
-| This computer system is the private property of TAHLILYAR      |
+| This computer system is the private property of NEDSA      |
 | It is for authorized use only.                                         |
 |                                                                        |
 | Users (authorized or unauthorized) have no explicit or implicit        |
@@ -750,7 +562,7 @@ cat > /etc/issue.net << 'EOF'
 EOF
 cp -p /etc/motd /etc/motd_$TIME.bak
 cat > /etc/motd << 'EOF'
-TAHLILYAR AUTHORIZED USE ONLY
+NEDSA AUTHORIZED USE ONLY
 EOF
 
 echo "Configuring SSH..."
