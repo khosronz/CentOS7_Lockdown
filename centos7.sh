@@ -307,9 +307,21 @@ systemctl daemon-reload
 systemctl enable aidecheck.service 
 systemctl --now enable aidecheck.timer
 
-## 
 
-##### sudo systemctl stop php7.4-fpm
+sudo yum install chrony -y
+sudo yum install ntp -y
+
+sudo sed -i 's/restrict default nomodify notrap nopeer noquery/restrict -4 default kod nomodify notrap nopeer noquery\nrestrict -6 default kod nomodify notrap nopeer noquery/g' /etc/ntp.conf
+
+sudo sed -i 's/server 0.centos.pool.ntp.org iburst/#server 0.centos.pool.ntp.org iburst/g' /etc/ntp.conf
+sudo sed -i 's/server 1.centos.pool.ntp.org iburst/#server 1.centos.pool.ntp.org iburst/g' /etc/ntp.conf
+sudo sed -i 's/server 2.centos.pool.ntp.org iburst/#server 2.centos.pool.ntp.org iburst/g' /etc/ntp.conf
+sudo sed -i 's/server 3.centos.pool.ntp.org iburst/#server 3.centos.pool.ntp.org iburst/g' /etc/ntp.conf
+sudo sed -i 's/#server 0.centos.pool.ntp.org iburst/server 10.100.197.4/g' /etc/ntp.conf
+
+sudo sed -i 's/OPTIONS=\"-g\"/OPTIONS=\"-u ntp:ntp\"/g' /etc/sysconfig/ntpd
+
+
 
 
 sudo yum install chrony -y
@@ -324,15 +336,82 @@ sudo systemctl stop ip6tables
 sudo yum remove iptables-services
 
 
+sudo sed -i 's/server 0.centos.pool.ntp.org iburst/#server 0.centos.pool.ntp.org iburst/g' /etc/chrony.conf
+sudo sed -i 's/server 1.centos.pool.ntp.org iburst/#server 1.centos.pool.ntp.org iburst/g' /etc/chrony.conf
+sudo sed -i 's/server 2.centos.pool.ntp.org iburst/#server 2.centos.pool.ntp.org iburst/g' /etc/chrony.conf
+sudo sed -i 's/server 3.centos.pool.ntp.org iburst/#server 3.centos.pool.ntp.org iburst/g' /etc/chrony.conf
+sudo sed -i 's/#server 0.centos.pool.ntp.org iburst/server 10.100.197.4/g' /etc/chrony.conf
+
+sudo sed -i 's/OPTIONS=\"\"/OPTIONS=\"-u chrony\"/g' /etc/sysconfig/chronyd
+
 #/usr/bin/systemctl is-enabled rsyncd ----> masked
 # Ensure IP forwarding is disabled - sysctlc.conf sysctl.d
 
+sudo systemctl restart ntpd
+sudo systemctl restart chronyd
+sudo systemctl enable ntpd
+sudo systemctl enable chronyd
 
+sed -i 's/inet_interfaces = localhost/inet_interfaces = loopback-only/g' /etc/postfix/main.cf
+systemctl restart postfix
+
+sed -i 's/GRUB_CMDLINE_LINUX=\"crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos\/root rd.lvm.lv=centos\/swap rhgb quiet\"/GRUB_CMDLINE_LINUX=\"audit=1\"/g' /etc/default/grub
+
+
+grub2-mkconfig > /boot/grub2/grub.cfg
+
+sudo yum install tcp_wrappers
+
+echo 'sshd : ALL' > /etc/hosts.deny
 # grep -Els '^s*net.ipv4.ip_forwards*=s*1' /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri 's/^s*(net.ipv4.ip_forwards*)(=)(s*S+b).*$/# *REMOVED* 1/' $filename; 
 # done; 
 # sysctl -w net.ipv4.ip_forward=0; 
 # sysctl -w net.ipv4.route.flush=1
 
+
+cat > /etc/hosts.allow << "EOF"
+sshd : 192.168.188.0/24
+sshd : 192.168.139.0/24
+sshd : 10.100.197.0/24
+sshd : 10.204.120.234
+sshd : 10.204.120.235
+sshd : 10.204.120.236
+sshd : 10.204.120.237
+sshd : 10.204.120.238
+sshd : 10.204.120.239
+sshd : 10.100.50.100
+sshd : 10.100.50.101
+sshd : 10.8.4.11
+sshd : 10.8.4.12
+sshd : 10.8.4.13
+sshd : 10.8.4.14
+sshd : 127.0.0.1
+sshd : [::1]
+EOF
+
+sed -i 's/#Port 22/Port 9876/g' /etc/ssh/sshd_config
+
+sudo yum -y install firewalld
+sudo yum -y install policycoreutils-python
+
+sudo systemctl start firewalld 
+sudo systemctl enable firewalld 
+
+sudo semanage port -a -t ssh_port_t -p tcp 9876
+sudo semanage port -m -t ssh_port_t -p tcp 9876
+
+sudo firewall-cmd --permanent --add-port=9876/tcp 
+sudo firewall-cmd --permanent --add-port=22/tcp 
+sudo firewall-cmd --reload 
+sudo systemctl restart sshd
+
+firewall-cmd --permanent --allow-port=9876/tcp
+firewall-cmd --permanent --allow-port=80/tcp
+firewall-cmd --permanent --allow-port=443/tcp
+firewall-cmd --permanent --remove-port=22/tcp
+firewall-cmd --permanent --remove-service=ssh
+firewall-cmd --reload
+firewall-cmd --list-all
 
 grep -Els '^s*net.ipv6.conf.all.forwardings*=s*1' /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf /run/sysctl.d/*.conf | while read filename; do sed -ri 's/^s*(net.ipv6.conf.all.forwardings*)(=)(s*S+b).*$/# *REMOVED* 1/' 
 $filename; done; sysctl -w net.ipv6.conf.all.forwarding=0; sysctl -w net.ipv6.route.flush=1
@@ -372,6 +451,8 @@ sysctl -w net.ipv6.conf.default.accept_redirects=0
 sysctl -w net.ipv6.route.flush=1
 
 #  Ensure source routed packets are not accepted - files 'net.ipv4.conf.all.accept_source_route = 0'
+sed -i 's/^max_log_file = 8$/max_log_file = 32/' /etc/audit/auditd.conf
+
 
 #
 
@@ -389,162 +470,10 @@ sed -i 's/^max_log_file = 8$/max_log_file = 1024/' /etc/audit/auditd.conf
 #  Ensure audit logs are not automatically deleted
 sed -i 's/^max_log_file_action = ROTATE$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf
 
-# Ensure system is disabled when audit logs are full - 'admin_space_left_action = halt'
+sed -i 's/space_left_action = SYSLOG/space_left_action = email/g' /etc/audit/auditd.conf
+sed -i 's/action_mail_acct.*/action_mail_acct = root/g' /etc/audit/auditd.conf
+sed -i 's/admin_space_left_action = SYSLOG/admin_space_left_action = halt/g' /etc/audit/auditd.conf
 
-
-
-
-# Ensure separate partition exists for /usr => 2 GB
-# Ensure separate partition exists for /tmp => 2 GB
-# Ensure separate partition exists for /var => 5 GB
-# Ensure separate partition exists for /var/tmp => 1G
-# Ensure separate partition exists for /var/log => 1G
-# Ensure separate partition exists for /var/log/audit => 1G
-# Ensure separate partition exists for /home => 3 GB
-
-# sudo yum install lvm -y
-
-# sudo fdisk /dev/sdb
-#     m
-#     o
-#     n
-#     p    
-
-#     t
-#     8e
-#     w
-
-# lsblk 
-
-# sudo pvcreate /dev/sdb1
-# sudo vgcreate share /dev/sdb1
-
-# sudo lvcreate --size 5G --name tahlilyar_var share
-# sudo lvcreate --size 1G --name tahlilyar_tmp share
-# sudo lvcreate --size 1G --name tahlilyar_log share
-# sudo lvcreate --size 1G --name tahlilyar_log_audit share
-# sudo lvcreate --size 3G --name tahlilyar_home share
-
-
-# sudo mkfs.ext4 /dev/share/tahlilyar_var
-# sudo mkfs.ext4 /dev/share/tahlilyar_tmp
-# sudo mkfs.ext4 /dev/share/tahlilyar_log
-# sudo mkfs.ext4 /dev/share/tahlilyar_log_audit
-# sudo mkfs.ext4 /dev/share/tahlilyar_home
-
-# sudo mkdir -p /opt/tahlilyar_tmp
-# sudo mkdir -p /opt/tahlilyar_log_audit
-# sudo mkdir -p /opt/tahlilyar_log
-# sudo mkdir -p /opt/tahlilyar_var
-# sudo mkdir -p /opt/tahlilyar_home
-
-
-# sudo lsof | grep /var
-
-
-# sudo systemctl stop mariadb
-# sudo systemctl stop httpd
-# sudo systemctl stop php-fpm
-# sudo systemctl stop redis
-# sudo systemctl stop firewalld
-# sudo systemctl stop tuned
-# sudo systemctl stop crond
-
-# sudo lsof | grep /var
-
-# sudo mkdir -p /opt/tahlilyar_var
-# sudo mkdir -p /opt/tahlilyar_home
-# sudo mkdir -p /opt/tahlilyar_tmp
-# sudo rsync -va /var/ /opt/tahlilyar_var/
-# sudo rsync -va /home/ /opt/tahlilyar_home/
-# sudo rsync -va /tmp/ /opt/tahlilyar_tmp/
-
-
-# sudo mv /var /var.old
-# #sudo mv /home /home.old
-# sudo mv /tmp /tmp.old
-
-# sudo mkdir -p /var
-# #sudo mkdir -p /home
-# sudo mkdir -p /tmp
-
-# sudo mount /dev/share/tahlilyar_var /var
-# #sudo mount /dev/share/tahlilyar_home /home
-# sudo mount /dev/share/tahlilyar_tmp /tmp
-
-# sudo rsync -va /opt/tahlilyar_var/ /var
-# #sudo rsync -va /opt/tahlilyar_home/ /home
-# sudo rsync -va /opt/tahlilyar_tmp/ /tmp
-
-
-
-# sudo rsync -va /opt/tahlilyar_var/ /var
-
-# sudo vim /etc/fstab
-#     ...
-# /dev/share/tahlilyar_var /var                       ext4     defaults        0 0
-# #/dev/share/tahlilyar_home /home                       ext4     defaults        0 0
-# /dev/share/tahlilyar_tmp /tmp                       ext4     rw,noexec,nosuid,nodev,bind        0 0
-
-
-
-# mount -a
-
-# sudo rm -fr /var.old
-# sudo rm -fr /home.old
-# sudo rm -fr /tmp.old
-
-
-
-# # sudo mkdir /var/log/audit
-# # sudo mkdir /var/log
-
-# # sudo cp -r /tmp/* /opt/tahlilyar_tmp
-# # sudo cp -r /var/* /opt/tahlilyar_var
-# # sudo cp -r /home/* /opt/tahlilyar_home
-
-
-
-# sudo mount /dev/share/tahlilyar_tmp /opt/tahlilyar_tmp
-# sudo mount /dev/share/tahlilyar_log_audit /opt/tahlilyar_log_audit
-# sudo mount /dev/share/tahlilyar_log /opt/tahlilyar_log
-# sudo mount /dev/share/tahlilyar_var /opt/tahlilyar_var
-# sudo mount /dev/share/tahlilyar_home /opt/tahlilyar_home
-
-
-
-
-# # 
-# # 
-# # 
-# # 
-# # 
-# # 
-# # 
-
-
-# mount /dev/share/tahlilyar_tmp /tmp
-# mount /dev/share/tahlilyar_log_audit /var/log/audit
-# mount /dev/share/tahlilyar_log /var/log
-# mount /dev/share/tahlilyar_var /var
-# mount /dev/share/tahlilyar_home /home
-
-# cp -r /opt/tahlilyar_tmp/* /tmp/
-# cp -r /opt/tahlilyar_var/* /var/
-# cp -r /opt/tahlilyar_home/* /home/
-
-# cat >> /etc/fstab << "EOF"
-# /tmp /var/tmp none rw,noexec,nosuid,nodev,bind 0 0
-# tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
-# /dev/share/tahlilyar_tmp /tmp none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_log_audit /var/log/audit none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_log /var/log none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_var /var none rw,noexec,nosuid,nodev,bind 0 0
-# /dev/share/tahlilyar_home /home none rw,noexec,nosuid,nodev,bind 0 0
-
-# EOF
-
-## 
 
 echo "Removing GCC compiler..."
 yum -y remove gcc*
@@ -590,6 +519,8 @@ authconfig --passalgo=sha512 --update
 
 echo "Setting core dump security limits..."
 echo '* hard core 0' > /etc/security/limits.conf
+echo 'fs.suid_dumpable = 0' > /etc/security/suid_dumpable.conf
+sysctl -w fs.suid_dumpable=0
 
 echo "Generating additional logs..."
 echo 'auth,user.* /var/log/user' >> /etc/rsyslog.conf
@@ -692,7 +623,7 @@ chmod og-rwx /etc/cron.d
 
 echo "Creating Banner..."
 
-#echo 'Authorized uses only. All activity may be monitored and reported.' > /etc/issue
+echo 'Authorized uses only. All activity may be monitored and reported.' > /etc/issue
 
 sed -i "s/\#Banner none/Banner \/etc\/issue\.net/" /etc/ssh/sshd_config
 cp -p /etc/issue.net $AUDITDIR/issue.net_$TIME.bak
@@ -1093,7 +1024,10 @@ net.ipv6.conf.all.accept_ra=0
 net.ipv6.conf.default.accept_ra=0
 net.ipv6.conf.all.accept_redirects=0
 net.ipv6.conf.default.accept_redirects=0
+kernel.randomize_va_space = 2
 EOF
+
+sysctl -w kernel.randomize_va_space=2
 
 echo "Disabling IPv6..."
 cp /etc/sysconfig/network $AUDITDIR/network_$TIME.bak

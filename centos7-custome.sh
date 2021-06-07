@@ -224,7 +224,9 @@ mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
 crontab -u root -e
 0 5 * * * /usr/sbin/aide --check
-
+cat > crontab -u root -e << "EOF"
+0 5 * * * /usr/sbin/aide --check
+EOF
 
 cat > /etc/systemd/system/aidecheck.service << "EOF"
 [Unit] 
@@ -538,7 +540,7 @@ cat > /etc/issue.net << 'EOF'
 /------------------------------------------------------------------------\
 |                       *** NOTICE TO USERS ***                          |
 |                                                                        |
-| This computer system is the private property of NEDSA      |
+| This computer system is the private property of TAHLILYAR      |
 | It is for authorized use only.                                         |
 |                                                                        |
 | Users (authorized or unauthorized) have no explicit or implicit        |
@@ -562,7 +564,7 @@ cat > /etc/issue.net << 'EOF'
 EOF
 cp -p /etc/motd /etc/motd_$TIME.bak
 cat > /etc/motd << 'EOF'
-NEDSA AUTHORIZED USE ONLY
+TAHLILYAR AUTHORIZED USE ONLY
 EOF
 
 echo "Configuring SSH..."
