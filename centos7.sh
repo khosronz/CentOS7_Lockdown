@@ -272,8 +272,9 @@ sudo yum install aide -y
 sudo aide --init
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
-crontab -u root -e
+cat > crontab -u root -e << "EOF"
 0 5 * * * /usr/sbin/aide --check
+EOF
 
 
 cat > /etc/systemd/system/aidecheck.service << "EOF"
